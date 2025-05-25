@@ -1,0 +1,26 @@
+pypdf
+python-multipart
+pandas
+
+# LangChain e Vetores
+langchain
+chromadb
+sentence-transformers
+langchain-community
+langchain-huggingface
+langchain-core
+
+# LLM via Ollama
+ollama
+
+# API com FastAPI
+fastapi
+uvicorn[standard]
+
+# CORS para integrar com front-end
+fastapi[all]
+aiofiles
+pydantic
+
+# Testes automatizados
+pytest
