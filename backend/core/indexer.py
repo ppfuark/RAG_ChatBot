@@ -1,0 +1,45 @@
+import os, shutil
+from langchain.document_loaders.pdf import PyPDFDirectoryLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.schema.document import Document
+from langchain.vectorstores.chroma import Chroma
+from core.embedding import get_embedding_function
+
+CHROMA_PATH = "chroma"
+DATA_PATH = "data"
+
+def index_pdfs():
+    documents = load_documents()
+    chunks = split_documents(documents)
+    add_to_chroma(chunks)
+
+def load_documents():
+    loader = PyPDFDirectoryLoader(DATA_PATH)
+    return loader.load()
+
+def split_documents(documents: list[Document]):
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=800, chunk_overlap=80, length_function=len
+    )
+    return splitter.split_documents(documents)
+
+def calculate_chunk_ids(chunks):
+    last_page_id = None
+    current_chunk_index = 0
+    for chunk in chunks:
+        source = chunk.metadata.get("source")
+        page = chunk.metadata.get("page")
+        current_page_id = f"{source}:{page}"
+        current_chunk_index = current_chunk_index + 1 if current_page_id == last_page_id else 0
+        chunk.metadata["id"] = f"{current_page_id}:{current_chunk_index}"
+        last_page_id = current_page_id
+    return chunks
+
+def add_to_chroma(chunks: list[Document]):
+    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=get_embedding_function())
+    chunks = calculate_chunk_ids(chunks)
+    existing = set(db.get(include=[])["ids"])
+    new_chunks = [chunk for chunk in chunks if chunk.metadata["id"] not in existing]
+    if new_chunks:
+        db.add_documents(new_chunks, ids=[c.metadata["id"] for c in new_chunks])
+        db.persist()
