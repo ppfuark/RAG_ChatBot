@@ -20,5 +20,5 @@ def query_rag(question: str):
     results = db.similarity_search_with_score(question, k=5)
     context = "\n\n---\n\n".join([doc.page_content for doc, _ in results])
     prompt = ChatPromptTemplate.from_template(PROMPT_TEMPLATE).format(context=context, question=question)
-    model = OllamaLLM(model="gemma:2b")
+    model = OllamaLLM(model="deepseek-r1:1.5b")
     return model.invoke(prompt)
