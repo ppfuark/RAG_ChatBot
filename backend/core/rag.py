@@ -19,6 +19,7 @@ Instructions:
 - Your answer must be entirely based on this content. Do not use outside knowledge.
 - If the context refers to a specific section of a document (e.g., "Section 6") that is not fully visible, you should provide a brief and general summary based on what is mentioned about that section in the visible context.
 - If the requested information is not clearly available, state that explicitly.
+- You are allowed to provide code examples or technical explanations, but only if the context supports it or clearly implies it.
 - Your response must be in the same language as the user's question.
 - Be concise, clear, and informative in your explanation.
 
