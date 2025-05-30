@@ -7,14 +7,27 @@ from core.embedding import get_embedding_function
 CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
-Answer the question based only on the following context:
+You are an AI assistant tasked with providing accurate and clear answers using only the information given in the context below.
 
+Context:
 {context}
 
 ---
 
-Answer the question based on the above context: {question}
+Instructions:
+- Carefully analyze the context above.
+- Your answer must be entirely based on this content. Do not use outside knowledge.
+- If the context refers to a specific section of a document (e.g., "Section 6") that is not fully visible, you should provide a brief and general summary based on what is mentioned about that section in the visible context.
+- If the requested information is not clearly available, state that explicitly.
+- Your response must be in the same language as the user's question.
+- Be concise, clear, and informative in your explanation.
+
+Question:
+{question}
+
+Answer:
 """
+
 
 def query_rag(question: str):
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=get_embedding_function())
@@ -26,7 +39,7 @@ def query_rag(question: str):
         question=question
     )
 
-    model = OllamaLLM(model="mistral")
+    model = OllamaLLM(model="llama3.2:latest")
     response = model.invoke(prompt)
 
     # Extrair conteúdo do <think>
