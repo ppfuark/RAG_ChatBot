@@ -1,9 +1,18 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from api.v1.api import router
 from core.context_loader import index_pdfs
 
 app = FastAPI(title="RAG API com contexto pré-processado")
 
-index_pdfs()
+# ✅ Adiciona o CORS aqui
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # ou ["*"] para todas as origens
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+index_pdfs()
 app.include_router(router)
