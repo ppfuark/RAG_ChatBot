@@ -25,7 +25,7 @@ const ChatRAG = () => {
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
       
-      const response = await axios.post("http://127.0.0.1:8000/rag/ask/", {
+      const response = await axios.post("/rag/ask/", {
         question: question,
       }, {
         timeout: 300000 // 300 seconds timeout
@@ -66,7 +66,7 @@ const ChatRAG = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+      <div className="max-w-3xl mx-auto bg-white shadow-md overflow-hidden">
         {/* Header */}
         <div className="bg-[#9f2ad1] p-6 text-white">
           <h1 className="text-2xl font-bold">Chat with RAG</h1>
@@ -86,7 +86,7 @@ const ChatRAG = () => {
                 className={`flex ${item.sender === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div 
-                  className={`max-w-xs md:max-w-md lg:max-w-lg rounded-lg px-4 py-2 ${item.sender === "user" 
+                  className={`max-w-xs md:max-w-md lg:max-w-lg -lg px-4 py-2 ${item.sender === "user" 
                     ? "bg-[#f0d9ff] text-[#9f2ad1]" 
                     : "bg-gray-100 text-gray-800"}`}
                 >
@@ -101,11 +101,11 @@ const ChatRAG = () => {
           
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 rounded-lg px-4 py-2">
+              <div className="bg-gray-100 -lg px-4 py-2">
                 <div className="flex space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-[#9f2ad1] animate-bounce"></div>
-                  <div className="w-2 h-2 rounded-full bg-[#9f2ad1] animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                  <div className="w-2 h-2 rounded-full bg-[#9f2ad1] animate-bounce" style={{animationDelay: '0.4s'}}></div>
+                  <div className="w-2 h-2 -full bg-[#9f2ad1] animate-bounce"></div>
+                  <div className="w-2 h-2 -full bg-[#9f2ad1] animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  <div className="w-2 h-2 -full bg-[#9f2ad1] animate-bounce" style={{animationDelay: '0.4s'}}></div>
                 </div>
               </div>
             </div>
@@ -115,14 +115,14 @@ const ChatRAG = () => {
         {/* Input area */}
         <div className="border-t p-4 bg-gray-50">
           {error && (
-            <div className="mb-3 p-2 bg-red-50 text-red-600 rounded text-sm">
+            <div className="mb-3 p-2 bg-red-50 text-red-600  text-sm">
               {error}
             </div>
           )}
           
           <div className="flex space-x-2">
             <textarea
-              className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-[#9f2ad1] focus:border-[#9f2ad1]"
+              className="flex-1 p-3 border -lg focus:ring-2 focus:ring-[#9f2ad1] focus:border-[#9f2ad1]"
               rows="2"
               placeholder="Type your question here..."
               value={question}
@@ -132,7 +132,7 @@ const ChatRAG = () => {
             />
             
             <button
-              className="bg-[#9f2ad1] text-white px-6 py-2 rounded-lg hover:bg-[#8a1bc2] 
+              className="bg-[#9f2ad1] text-white px-6 py-2 -lg hover:bg-[#8a1bc2] 
                          focus:outline-none focus:ring-2 focus:ring-[#9f2ad1] focus:ring-offset-2
                          disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               onClick={handleSend}
