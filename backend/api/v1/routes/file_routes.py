@@ -1,12 +1,13 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from fastapi.responses import FileResponse
 import os
-from typing import List
 from core.context_loader import index_pdfs
+from core.db import SessionLocal
+from models.models import UploadedFile
 
 router = APIRouter()
 UPLOAD_DIR = "data"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 
 @router.post("/")
 async def post_file(file: UploadFile = File(...)):
@@ -14,6 +15,12 @@ async def post_file(file: UploadFile = File(...)):
     try:
         with open(file_path, "wb") as f:
             f.write(await file.read())
+
+        db = SessionLocal()
+        file_record = UploadedFile(filename=file.filename)
+        db.add(file_record)
+        db.commit()
+        db.close()
 
         try:
             index_pdfs()
@@ -24,22 +31,3 @@ async def post_file(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"File upload failed: {e}")
     
     return {"filename": file.filename}
-
-@router.get("/{filename}")
-async def get_file(filename: str):
-    file_path = os.path.join(UPLOAD_DIR, filename)
-    if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail="File not found")
-    return FileResponse(path=file_path, filename=filename)
-
-@router.get("/", response_model=List[str])
-async def list_files():
-    return os.listdir(UPLOAD_DIR)
-
-@router.delete("/{filename}")
-async def delete_file(filename: str):
-    file_path = os.path.join(UPLOAD_DIR, filename)
-    if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail="File not found")
-    os.remove(file_path)
-    return {"detail": f"File '{filename}' deleted successfully."}

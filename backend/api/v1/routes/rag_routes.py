@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from schemas.rag_schema import RAGQuery
+from schemas.schemas import RAGQuery
 from core.rag import query_rag
 
 router = APIRouter()
