@@ -40,7 +40,7 @@ def query_rag(question: str):
         question=question
     )
 
-    model = OllamaLLM(model="llama3.2:latest")
+    model = OllamaLLM(model="qwen3:4b")
     response = model.invoke(prompt)
 
     # Extrair conteúdo do <think>

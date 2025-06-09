@@ -6,7 +6,7 @@ import os
 from core.db import SessionLocal
 from models.models import UploadedFile
 from core.context_loader import index_pdfs
-from schemas import UploadedFileCreate, UploadedFileUpdate, UploadedFileOut
+from schemas.schemas import UploadedFileCreate, UploadedFileUpdate, UploadedFileOut
 
 router = APIRouter()
 UPLOAD_DIR = "data"
