@@ -5,13 +5,12 @@ import os
 
 from core.db import SessionLocal
 from models.models import UploadedFile
-from core.context_loader import index_pdfs
+from core.context_loader import index_pdf
 from schemas.schemas import UploadedFileCreate, UploadedFileUpdate, UploadedFileOut
 
 router = APIRouter()
 UPLOAD_DIR = "data"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
-
 
 def get_db():
     db = SessionLocal()
@@ -40,7 +39,7 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
     try:
-        index_pdfs()
+        index_pdf(file_path)  # <-- only index this file
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Indexing failed: {e}")
 
