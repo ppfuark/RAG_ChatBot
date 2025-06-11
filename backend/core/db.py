@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 DB_USER = "root"
-DB_PASSWORD = "senai"
+DB_PASSWORD = "root"
 DB_HOST = "localhost"
 DB_NAME = "rag_chatbot"
 

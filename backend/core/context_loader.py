@@ -46,6 +46,10 @@ def add_to_chroma(chunks: list[Document]):
 
 # NEW FUNCTION: index a single file
 def index_pdf(file_path: str):
-    documents = load_single_pdf(file_path)
-    chunks = split_documents(documents)
-    add_to_chroma(chunks)
+    try:
+        documents = load_single_pdf(file_path)
+        chunks = split_documents(documents)
+        add_to_chroma(chunks)
+    except Exception as e:
+        print(f"[index_pdf ERRO] {e}")
+        raise

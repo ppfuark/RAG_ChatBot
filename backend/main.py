@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.v1.api import router
-from core.context_loader import index_pdfs
 from models.models import Base
 from core.db import engine
 
@@ -20,6 +19,5 @@ app.add_middleware(
 )
 
 Base.metadata.create_all(bind=engine)
-index_pdfs()
 
 app.include_router(router)
