@@ -53,3 +53,13 @@ def index_pdf(file_path: str):
     except Exception as e:
         print(f"[index_pdf ERRO] {e}")
         raise
+
+# NEW FUNCTION: index all files
+def index_pdfs():
+    documents = load_documents()
+    chunks = split_documents(documents)
+    add_to_chroma(chunks)
+
+def load_documents():
+    loader = PyPDFDirectoryLoader(DATA_PATH)
+    return loader.load()
